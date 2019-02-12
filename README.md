@@ -12,7 +12,7 @@ Each tag comes in a pair, and has a starting and ending tag. They are usually de
 **Note:** you must always have an opening and closing tag, otherwise your page will not load properly.
 
 #### Tag Types
-There hundreds of tag types! You can view a full [list here] (https://www.w3schools.com/tags/ref_byfunc.asp), but don't worry, you really only need to understand a few types to get things working. Here's the main ones:
+There hundreds of tag types! You can view a full [list here](https://www.w3schools.com/tags/ref_byfunc.asp), but don't worry, you really only need to understand a few types to get things working. Here's the main ones:
 
 | `<html>`        | Defines an HTML document                                    |
 | :-------------- | :----------------------------------------------------------- |
