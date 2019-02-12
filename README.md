@@ -163,17 +163,216 @@ Now that you've been introduced to the basics of HTML, you're probably wondering
 
 ### General Style Properties
 
-Every element on the page has a set of CSS styles that can be applied to it. There are some basics which apply to all.
+Every element on the page has a set of CSS styles that can be applied to it. There are some basics which apply to all. Let's use an "inline" style tag to experiment with some of these on a `<div>` with our name in it:
+
+```html
+<div style="color:white;background-color:blue;font-size:20px;">
+    Branick Weix
+</div>
+```
+
+You can see we are defining a number of CSS attributes, all seperated by the `;`. Within each CSS attribute we have the pattern of `key`:`value`, where they are seperated by a colon sign. Our first attribute is the `color` attribute which sets the text color of whatever is within that element (and sub-elements). The `background-color` attribute sets the background color, and `font-size` sets the font size. Here's what it looks like:
+
+![chromeEaxmple6](note-sources/chromeEaxmple6.png)
+
+As you can see, my name is now the color white, on a blue background and set to size 22px font. Note: why does the blue go all the way to the end of the page? That's because this is a div and they take up an entire row at a time! While my name only takes up a small amount of space, the actual div containing my name takes up the entire width of the page. Try this on your own and experiment with see how much space a div will take up vs. a span.
+
+### Attribute Scope
+
+Now what happens if we have a div within a div? What about something like this, what styling should the interior element follow:
+
+```html
+<div style="color:white;background-color:blue;font-size:20px;">
+    <div style="font-size:12px">
+        Branick Weix
+    </div>
+</div>
+```
+
+What happens here is that **unless explicity over-written, styles will descend to all of their children**. This means that my name should also have a blue background and be in the color white. What about font-size though? Because this is set on a lower element as well, my name will assume the font-size of 12px, because that is the closest defintion to the text. The output looks like this:
+
+![chromeExample7](note-sources/chromeExample7.png)
+
+As you can see it looks very similar to the previous example, but my name is now smaller because that was the only differing styling.
+
+### Available Attributes
+
+There are quite literally hundreds of style attributes available and some only available with certain elements. There is a lot of overlap however and often these styles can be used on any element. Check out the [complete list here](http://www.stylinwithcss.com/resources_css_properties.php).
+
+| CSS Style        | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| color            | defines the text color                               |
+| background-color | defines the background color                         |
+| font-size        | defines the font size (px)                           |
+| border-style     | default is `none`, otherwise `solid`, `dashed`, etc. |
+| border-width     | weight of the border (px)                            |
+| border-radius    | px of each corners radius, default 0px (square)      |
+| padding          | defines element padding                              |
+| margin           | defines element margin                               |
+| width            | define content width, can be fixed px's, or %        |
+| height           | define content height, can be fixed px's or %        |
+| font-style       | define the font family and details                   |
+|                  |                                                      |
+|                  |                                                      |
+
+### Content, Padding, Border, Margin
+
+This is an extremely important concept to understand! Every single element has these stylistic elements and they ascend in that order. Here's a visualization: 
+
+![css-box-model](note-sources/css-box-model.png)
+
+Every element that we put on the page is defined as the "content". As you saw with the image example, we can set the height and width of this element. There is then an area around the image, this is set by padding. The outer bounds of padding are still the limits of the element, which at it's outer edge is defined by a border. Every page element can have a border, but by default it's empty. Finally, an element can have margin, this is the amount of space around that element  that another element cannot come into contact with - think of it as permament white space surounding an object. I know this may seem very confusing, but we'll cover in class and the best way to learn is to reference this chart and play around with different margins and paddings.
 
 ### Utilizing Class Names
 
+Let's say we have a list of names that we want to have a green background with white text, we could display that like this:
+
+```html
+<ul>
+    <li style="color:white;background-color:green">Branick</li>
+    <li style="color:white;background-color:green">Jimmy</li>
+     <li style="color:white;background-color:green">Tom</li>
+</ul>
+```
+
+This seems wasteful and confusing doesn't it? Why would we duplicate all of the same attribute values. This is what `class` is for! Let's open a `<style>` tag at the beginning of the page and define a class. When we write two `<style>`...`</style>` tags, we are telling the browser that everything between those two tags isn't going to be HTML, it will be CSS. Think of it like we are embedding a different type of document within our HTML document. Here's what it would look like to define a class within a style tag:
+
+```html
+<style>
+    .list_name {
+        color: white;
+        background-color: green;
+    }
+</style>
+```
+
+This notation is defining a new class name called "list_name". The `. ` (period) symbol denotes that it is defining a class name. This can be an arbitrary, unique name, but try to make it something that is relevant and easy to read. After the name you put an opening and close bracket pair `{ }`. Within the brackets we can define style attributes just as we did inline before. You'll see that once again they follow the `key`:`value` pattern, but now each different attribute is seperated by a line break as well. This makes things much more readable.
+
+Now that we have the class name, how do we apply it to the elements in our list? We use the `class=` attribute:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+  <style>
+    .list_name {
+      color: white;
+      background-color: green;
+    }
+  </style>
+</head>
+<body>
+  <h3>CSS Example</h3>
+  <ul>
+    <li class="list_name">Branick</li>
+    <li class="list_name">Jimmy</li>
+    <li class="list_name">Tom</li>
+  </ul>
+</body>
+</html>
+```
+
+As you may have noticed, we define all of the style attributes within the `<head>` tags. This is because when the browser is reading the HTML file, we want it to know what the things look like before they are built. Otherwise the classes won't be applied properly. Looking at our unordered list, you'll see each list item has the new class of "list_name", this will then apply all of the attributes we have defined in `list_name` to each the list elements.
+
+#### Multiple Class Names
+
+What if we want to use multiple classes on the same elements? CSS supports that as well:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+  <style>
+    .list_name {
+      color: white;
+      background-color: green;
+      margin: 5px;
+    }
+    .big_font {
+      font-size: 24px;
+    }
+    .small_font {
+      font-size: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h3>CSS Example</h3>
+  <ul>
+    <li class="list_name big_font">Branick</li>
+    <li class="list_name small_font">Jimmy</li>
+    <li class="list_name big_font">Tom</li>
+  </ul>
+</body>
+</html>
+```
+
+Simply enter each additional class names after the previous name and sepearte them by a space. This page would result in: 
+
+![chromeExample9](note-sources/chromeExample9.png)
+
+You can see that we also added a `margin` around each div from before as well. The white space from betweens rows is because of this! This is a good example that you can use to play around with margin and padding to see what goes where.
+
 ### Linking Stylesheets
+
+As you have probably noticed, our document is starting to get pretty long (and somewhat confusing). Technically everything between the two `<style>` tags is CSS, not HTML. Because of this, there is an easy way to break all of this into it's own file and simply link the file once in the HTML document. To begin, create a new file called "index.css" in the same directory as your current HTML file. Then cut and paste all of your CSS into this new file:
+
+``` css
+  .list_name {
+      color: white;
+      background-color: green;
+      margin: 5px;
+    }
+
+    .big_font {
+      font-size: 24px;
+    }
+
+    .small_font {
+      font-size: 8px;
+    }
+```
+
+Because this is a pure CSS file, we no longer need the `<style>` tags. Lets now link this new CSS file into our HTML document. We can do so with a `<link>` tag within the `<head>` of the document:
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Page Title</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <h3>CSS Example</h3>
+  <ul>
+    <li class="list_name big_font">Branick</li>
+    <li class="list_name small_font">Jimmy</li>
+    <li class="list_name big_font">Tom</li>
+  </ul>
+</body>
+
+</html>
+```
+
+Much cleaner now and you will see that the result is identical: 
+
+![chromeExample9](note-sources/chromeExample9.png)
 
 ### Flexboxes
 
+Most of modern web design utilized flex boxes. We won't cover this in-depth here, but I recommend searching around for some good tutorials and guides. If you're familiar with Boostrap definetely check it out, a lot of web developers are going native with support and using flexbox for all of their pages.
+
 ## Designing Complete Webpage
 
-Example: https://www.w3schools.com/w3css/w3css_templates.asp
+Can you make the following landing page now? You have all of the skills to do this! Here's a quick tutorial that you can use to get started. Hint: you will need to get your own image URL from unsplash and adjust the body padding/margin to make it edge to edge...
+
+Tutorial: https://www.w3schools.com/howto/howto_css_hero_image.asp
+
+![chromeExample10](/Users/bdweix/Code/projects/web-app-notes/week-2-notes/note-sources/chromeExample10.png)
 
 ## Resources
 
